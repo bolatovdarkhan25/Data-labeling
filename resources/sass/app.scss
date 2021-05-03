@@ -1,0 +1,36 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito');
+
+// Variables
+@import 'variables';
+
+// Bootstrap
+@import '~bootstrap/scss/bootstrap';
+
+//@import "styles";
+
+.one-month-gradient {
+    background-image: linear-gradient(to right, rgba(72,214,60,0.91), rgba(101,214,105,0.91), rgba(177,214,124,0.91));
+}
+.three-month-gradient {
+    background-image: linear-gradient(to right, rgba(255,47,77,0.76), rgba(255,109,117,0.76), rgba(255,155,160,0.76));
+}
+.six-month-gradient {
+    background-image: linear-gradient(to right, rgba(26,58,246,0.91), rgba(58,120,255,0.91), rgba(104,129,255,0.91));
+}
+.sub-card {
+    position: relative;
+    height: 100px; width: 400px;
+    border-radius: 15px;
+}
+.sub-card-in {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 80%;
+    height: 30%;
+    margin: auto;
+    color: white;
+}
