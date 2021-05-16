@@ -44,6 +44,9 @@
                         <a class="dropdown-item" href="{{ route('profile') }}">
                             {{ __('Profile') }}
                         </a>
+                        <a class="dropdown-item" href="{{ route('subscriptions') }}">
+                            {{ __('Subscriptions') }}
+                        </a>
                         <a class="dropdown-item" href="{{ route('archive') }}">
                             {{ __('Archive') }}
                         </a>

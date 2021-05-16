@@ -9,18 +9,19 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    @if(strpos(\Illuminate\Support\Facades\Route::current()->getPrefix(), 'admin'))
+    @if(strpos(\Illuminate\Support\Facades\Route::current()->getPrefix(), 'admin') !== false)
         <link href="{{asset('css/admin/bootstrap.min.css')}}" rel="stylesheet">
-        <link href="{{asset('css/admin/font-awesome.min.css')}}" rel="stylesheet">
         <link href="{{asset('css/admin/datepicker3.css')}}" rel="stylesheet">
         <link href="{{asset('css/admin/styles.css')}}" rel="stylesheet">
+        <link href="{{asset('css/admin/admin.css')}}" rel="stylesheet">
         <!--Custom Font-->
         <link href="https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
         <script src="{{asset('js/admin/html5shiv.min.js')}}"></script>
         <script src="{{asset('js/admin/respond.min.js')}}"></script>
     @else
         <!-- Scripts -->
-        <script src="{{ asset('js/app.js') }}"></script>
+        <script src="{{ asset('js/app.js')}}" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/2.0.4/wavesurfer.min.js"></script>
 
         <!-- Fonts -->
         <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -30,10 +31,12 @@
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @endif
 
+    <link href="{{asset('css/admin/font-awesome.min.css')}}" rel="stylesheet">
+
     @livewireStyles
 </head>
 <body>
-    @if(strpos(\Illuminate\Support\Facades\Route::current()->getPrefix(), 'admin'))
+    @if(strpos(\Illuminate\Support\Facades\Route::current()->getPrefix(), 'admin') !== false)
         <nav class="navbar navbar-custom navbar-fixed-top" role="navigation">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -57,6 +60,7 @@
             <ul class="nav menu">
                 <li><a href="/admin/dashboard"><em class="fa fa-dashboard">&nbsp;</em> Dashboard</a></li>
                 <li><a href="/admin/users"><em class="fa fa-users">&nbsp;</em> Users</a></li>
+                <li><a href="/admin/subscriptions"><em class="fa fa-star">&nbsp;</em> Subscriptions</a></li>
                 <li><a href="/"><em class="fa fa-arrow-left">&nbsp;</em> To the app</a></li>
                 <li><a href="{{ route('logout') }}"
                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
@@ -80,7 +84,7 @@
             @yield('content')
         </main>
     </div>
-    @if(strpos(\Illuminate\Support\Facades\Route::current()->getPrefix(), 'admin'))
+    @if(strpos(\Illuminate\Support\Facades\Route::current()->getPrefix(), 'admin') !== false)
         <script src="{{asset('js/admin/jquery-1.11.1.min.js')}}"></script>
         <script src="{{asset('js/admin/bootstrap.min.js')}}"></script>
         <script src="{{asset('js/admin/chart.min.js')}}"></script>
@@ -92,7 +96,7 @@
     @endif
     <script>
         // import WaveSurfer from 'wavesurfer.js';
-        console.log(WaveSurfer);
+        // console.log(WaveSurfer);
     </script>
     @livewireScripts
 </body>

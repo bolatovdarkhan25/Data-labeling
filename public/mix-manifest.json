@@ -1,6 +1,7 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
+    "/css/admin/admin.css": "/css/admin/admin.css",
     "/js/admin/bootstrap-datepicker.js": "/js/admin/bootstrap-datepicker.js",
     "/js/admin/bootstrap.js": "/js/admin/bootstrap.js",
     "/js/admin/bootstrap.min.js": "/js/admin/bootstrap.min.js",

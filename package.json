@@ -25,6 +25,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "alpinejs": "^2.8.2",
         "wavesurfer.js": "^4.6.0"
     }
 }

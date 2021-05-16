@@ -1,14 +1,3 @@
-// Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
-
-// Variables
-@import 'variables';
-
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
-
-//@import "styles";
-
 .gradient1 {
     background-image: linear-gradient(to right, rgba(109,196,255,1), rgba(96,239,234,1), rgba(143,255,210,1), rgba(129,255,155,1));
 }
@@ -23,33 +12,6 @@
     height: 100px; width: 400px;
     border-radius: 15px;
 }
-.sub-card-in {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 80%;
-    height: 30%;
-    margin: auto;
-    color: white;
-}
-
-.subs-tab {
-    font-size: 18px;
-    padding: 6px 0;
-}
-
-.subs-tab:hover {
-    cursor: pointer;
-    background-color: rgba(143,193,239,0.51);
-}
-
-.subs-tab-active {
-    background-color: rgba(36,146,255,0.82);
-    color: white;
-    pointer-events: none;
-}
 
 .sub-card:hover {
     cursor: pointer;
@@ -59,6 +21,14 @@
     border: 2px solid blue;
 }
 
-.disabled-sub {
-    pointer-events: none;
+.sub-card-in {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 90%;
+    height: 65%;
+    margin: auto;
+    color: white;
 }

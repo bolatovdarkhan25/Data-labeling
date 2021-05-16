@@ -6,9 +6,11 @@
 
 require('./bootstrap');
 
+import 'alpinejs';
+
 window.Vue = require('vue').default;
 
-const { WaveSurfer } = require('wavesurfer.js');
+window.WaveSurfer = require('wavesurfer.js');
 
 /**
  * The following block of code may be used to automatically register your
