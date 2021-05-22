@@ -38,5 +38,6 @@
     "/css/fonts/glyphicons-halflings-regular.svg": "/css/fonts/glyphicons-halflings-regular.svg",
     "/css/fonts/glyphicons-halflings-regular.ttf": "/css/fonts/glyphicons-halflings-regular.ttf",
     "/css/fonts/glyphicons-halflings-regular.woff": "/css/fonts/glyphicons-halflings-regular.woff",
-    "/css/fonts/glyphicons-halflings-regular.woff2": "/css/fonts/glyphicons-halflings-regular.woff2"
+    "/css/fonts/glyphicons-halflings-regular.woff2": "/css/fonts/glyphicons-halflings-regular.woff2",
+    "/js/wavesurfer.js": "/js/wavesurfer.js"
 }

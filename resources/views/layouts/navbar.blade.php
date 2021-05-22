@@ -47,9 +47,6 @@
                         <a class="dropdown-item" href="{{ route('subscriptions') }}">
                             {{ __('Subscriptions') }}
                         </a>
-                        <a class="dropdown-item" href="{{ route('archive') }}">
-                            {{ __('Archive') }}
-                        </a>
 
                         <a class="dropdown-item" href="{{ route('logout') }}"
                            onclick="event.preventDefault();

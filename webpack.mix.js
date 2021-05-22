@@ -19,3 +19,4 @@ mix.js('resources/js/app.js', 'public/js')
 mix.copyDirectory('resources/js/admin', 'public/js/admin');
 mix.copyDirectory('resources/css/admin', 'public/css/admin');
 mix.copyDirectory('resources/css/fonts', 'public/css/fonts');
+mix.copyDirectory('node_modules/wavesurfer.js', 'public/js');

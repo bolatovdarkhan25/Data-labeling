@@ -10,7 +10,6 @@ import 'alpinejs';
 
 window.Vue = require('vue').default;
 
-window.WaveSurfer = require('wavesurfer.js');
 
 /**
  * The following block of code may be used to automatically register your

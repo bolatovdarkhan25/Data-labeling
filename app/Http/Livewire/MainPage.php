@@ -4,7 +4,6 @@ namespace App\Http\Livewire;
 
 use App\Models\AudioFile;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -12,27 +11,66 @@ class MainPage extends Component
 {
     use WithFileUploads;
 
-    public $selectedFile;
+    public $selectedFiles;
+    public $labelingFile;
+    public $isPlaying;
+    public $labelingType;
 
     protected $rules = [
-        'selectedFile' => 'required|file|mimes:mp3,m4a,mpa,wav'
+        'selectedFiles' => 'required|array',
+        'selectedFiles.*' => 'required|file|mimes:mp3,wav'
+    ];
+
+    protected $listeners = [
+        'typeChosen' => 'labelTypeChosen',
+        'addRegion' => 'addRegion'
     ];
 
     public function upload()
     {
         $this->validate();
 
-        $path = $this->selectedFile->store('audio-files');
+        foreach ($this->selectedFiles as $selectedFile) {
+            $path = $selectedFile->store('public/audio-files');
 
-        if ($path) {
-            AudioFile::create([
-                'name' => $this->selectedFile->getClientOriginalName(),
-                'path' => $path,
-                'user_id' => Auth::id()
-            ]);
+            if ($path) {
+                AudioFile::create([
+                    'name' => $selectedFile->getClientOriginalName(),
+                    'path' => substr($path, 7),
+                    'user_id' => Auth::id()
+                ]);
+            }
         }
 
+        $this->selectedFiles = null;
+
         $this->render();
+    }
+
+    public function label($id)
+    {
+        $this->openLabelTypeModal($id);
+    }
+
+    public function cancelLabeling()
+    {
+        $this->labelingFile = null;
+    }
+
+    public function openLabelTypeModal($id)
+    {
+        $this->emit('openLabelTypesModal', $id);
+    }
+
+    public function labelTypeChosen($type, $id)
+    {
+        $this->labelingFile = AudioFile::find($id);
+        $this->labelingType = $type;
+    }
+
+    public function addRegion($region)
+    {
+        dd($region);
     }
 
     public function render()
