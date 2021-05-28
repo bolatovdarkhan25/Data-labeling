@@ -21,7 +21,7 @@
             <div class="col-xs-4 col-md-4 col-lg-4 no-padding">
                 <div class="panel panel-blue panel-widget border-right">
                     <div class="row no-padding"><em class="fa fa-xl fa-microphone color-gray"></em>
-                        <div class="large">{{$newUsersForWeekCount}}</div>
+                        <div class="large">{{$annotatedFilesCount}}</div>
                         <div class="text-muted">Audio files annotated</div>
                     </div>
                 </div>
@@ -45,14 +45,47 @@
 
     <script>
         window.onload = function () {
-            var chart1 = document.getElementById("line-chart").getContext("2d");
-            window.myLine = new Chart(chart1).Line(lineChartData, {
-                responsive: true,
-                scaleLineColor: "rgba(0,0,0,.2)",
-                scaleGridLineColor: "rgba(0,0,0,.05)",
-                scaleFontColor: "#c5c7cc"
-            });
+
+
         };
+
+        document.addEventListener('DOMContentLoaded', function () {
+            document.addEventListener('livewire:load', function () {
+                let chartData = {!! $chartData !!};
+
+                var lineChartData = {
+                    labels: [
+                        "January",
+                        "February",
+                        "March",
+                        "April",
+                        "May",
+                        "June",
+                    ],
+
+                    datasets: [
+                        {
+                            label: "My First dataset",
+                            fillColor : "rgba(48, 164, 255, 0.2)",
+                            strokeColor : "rgba(48, 164, 255, 1)",
+                            pointColor : "rgba(48, 164, 255, 1)",
+                            pointStrokeColor : "#fff",
+                            pointHighlightFill : "#fff",
+                            pointHighlightStroke : "rgba(48, 164, 255, 1)",
+                            data: chartData
+                        }
+                    ]
+                };
+
+                var chart1 = document.getElementById("line-chart").getContext("2d");
+                window.myLine = new Chart(chart1).Line(lineChartData, {
+                    responsive: true,
+                    scaleLineColor: "rgba(0,0,0,.2)",
+                    scaleGridLineColor: "rgba(0,0,0,.05)",
+                    scaleFontColor: "#c5c7cc"
+                });
+            });
+        });
     </script>
 
 </div>	<!--/.main-->

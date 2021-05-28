@@ -3,7 +3,12 @@
 namespace App\Http\Livewire;
 
 use App\Models\AudioFile;
+use App\Models\LabeledAuthor;
+use App\Models\LabeledSound;
+use App\Models\LabeledText;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -23,7 +28,7 @@ class MainPage extends Component
 
     protected $listeners = [
         'typeChosen' => 'labelTypeChosen',
-        'addRegion' => 'addRegion'
+        'refresh' => 'cancelLabeling'
     ];
 
     public function upload()
@@ -55,6 +60,7 @@ class MainPage extends Component
     public function cancelLabeling()
     {
         $this->labelingFile = null;
+        $this->labelingType = null;
     }
 
     public function openLabelTypeModal($id)
@@ -68,14 +74,82 @@ class MainPage extends Component
         $this->labelingType = $type;
     }
 
-    public function addRegion($region)
+    public function downloadSounds($id)
     {
-        dd($region);
+        $headers = ['id', 'start', 'end', 'sound'];
+
+        $data = LabeledSound::where('audio_file_id', $id)->select($headers)->get()->toArray();
+
+        $fileData = [$headers];
+
+        foreach ($data as $key => $value) {
+            $arr = [$key + 1, $value['start'], $value['end'], $value['sound']];
+            array_push($fileData, $arr);
+        }
+
+        $handle = fopen('../storage/app/public/sound.csv', 'w');
+
+        foreach ($fileData as $row) {
+            fputcsv($handle, $row);
+        }
+
+        fclose($handle);
+
+        return Storage::disk('public')->download('sound.csv');
+    }
+
+    public function downloadAuthors($id)
+    {
+        $headers = ['id', 'start', 'end', 'author'];
+
+        $data = LabeledAuthor::where('audio_file_id', $id)->select($headers)->get()->toArray();
+
+        $fileData = [$headers];
+
+        foreach ($data as $key => $value) {
+            $arr = [$key + 1, $value['start'], $value['end'], $value['author']];
+            array_push($fileData, $arr);
+        }
+
+        $handle = fopen('../storage/app/public/author.csv', 'w');
+
+        foreach ($fileData as $row) {
+            fputcsv($handle, $row);
+        }
+
+        fclose($handle);
+
+        return Storage::disk('public')->download('author.csv');
+    }
+
+    public function downloadTexts($id)
+    {
+        $headers = ['id', 'start', 'end', 'author', 'text'];
+
+        $data = LabeledText::where('audio_file_id', $id)->select($headers)->get()->toArray();
+
+        $fileData = [$headers];
+
+        foreach ($data as $key => $value) {
+            $arr = [$key + 1, $value['start'], $value['end'], $value['author'], $value['text']];
+            array_push($fileData, $arr);
+        }
+
+        $handle = fopen('../storage/app/public/text.csv', 'w');
+
+        foreach ($fileData as $row) {
+            fputcsv($handle, $row);
+        }
+
+        fclose($handle);
+
+        return Storage::disk('public')->download('text.csv');
     }
 
     public function render()
     {
         $audioFiles = AudioFile::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
+
         return view('livewire.main-page', compact('audioFiles'));
     }
 }

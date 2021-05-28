@@ -30,7 +30,7 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>email</th>
-                    <th>Annotated files</th>
+                    <th>Audio files</th>
                     <th></th>
                 </tr>
             </thead>
@@ -40,7 +40,7 @@
                         <td>{{$u->id}}</td>
                         <td>{{$u->name}}</td>
                         <td>{{$u->email}}</td>
-                        <td>{{$u->id}}</td>
+                        <td>{{$u->audioFiles->count()}}</td>
                         <td>
                             <div>
                                 <em class="fa fa-pencil color-blue"

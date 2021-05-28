@@ -44,6 +44,6 @@ class User extends Authenticatable
 
     public function audioFiles()
     {
-        return $this->hasMany(AudioFile::class);
+        return $this->hasMany(AudioFile::class, 'user_id', 'id');
     }
 }
