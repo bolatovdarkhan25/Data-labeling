@@ -37,5 +37,5 @@
              style="margin-top: 10px" wire:click.prevent="chooseClass('gradient3')"></div>
     </form>
 
-    <button class="btn btn-primary" style="margin-top: 20px" wire:click.prevent="store">Create</button>
+    <button class="btn btn-primary" style="margin-top: 20px; margin-bottom: 20px" wire:click.prevent="store">Create</button>
 </div>

@@ -119,7 +119,7 @@
             });
 
             let file = Object({!! $labelingFile !!});
-            let path = file.path;
+            let path = 'storage/' + file.path;
             let labelingType = '{!! $labelingType !!}';
 
             document.getElementById('play').style.display = 'inline-block';

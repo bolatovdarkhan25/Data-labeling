@@ -41,6 +41,10 @@
                             </a>
                         @endif
 
+                        <a class="dropdown-item" href="{{ route('main-page') }}">
+                            {{ __('Home page') }}
+                        </a>
+
                         <a class="dropdown-item" href="{{ route('profile') }}">
                             {{ __('Profile') }}
                         </a>
