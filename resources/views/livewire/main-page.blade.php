@@ -151,267 +151,456 @@
 
                         regions.push(region);
 
-                        let div = document.getElementById('sound');
+                        if(!region.hasDeleteButton) {
+                            let regionEl = region.element;
 
-                        let html = '';
+                            let deleteButton = regionEl.appendChild(document.createElement('deleteButton'));
+                            deleteButton.className = 'fa fa-trash';
 
-                        regions.forEach(function (reg, index) {
-                            html +=
-                                '<h3 class="mt-5">Sound #' + (index + 1) + '</h3>' +
-                                '<div class="mt-3 form-group">' +
+                            deleteButton.addEventListener('click', function(e) {
+                                let regionIndex = regions.findIndex(v => v.id == region.id);
+                                regions.splice(regionIndex, 1);
+                                region.remove();
+                                addSoundForms();
+                                refreshSoundLabels();
+                            });
+
+                            deleteButton.title = "Delete region";
+
+                            let css = {
+                                display: 'block',
+                                float: 'right',
+                                padding: '3px',
+                                position: 'relative',
+                                zIndex: 10,
+                                cursor: 'pointer',
+                                color: 'red',
+                                margin: '4px'
+                            };
+
+                            region.style(deleteButton, css);
+                            region.hasDeleteButton = true;
+                        }
+
+                        $('region[data-id="' + region.id + '"]')
+                            .eq(0)
+                            .append(
+                                '<div class="region-labels py-1" style="padding-left: 6px">' +
+                                    '<p class="m-0">Sound #' + regions.length + '</p>' +
+                                '</div>'
+                            );
+
+                        function refreshSoundLabels() {
+                            let regionLabels = document.getElementsByClassName('region-labels');
+                            let len = regionLabels.length
+                            for (let i = 0; i < len; i++) {
+                                regionLabels[0].parentNode.removeChild(regionLabels[0]);
+                            }
+                            regions.forEach(function (reg, index) {
+                                $('region[data-id="' + reg.id + '"]')
+                                    .eq(0)
+                                    .append(
+                                        '<div class="region-labels py-1" style="padding-left: 6px">' +
+                                        '<p class="m-0">Sound #' + (index + 1) + '</p>' +
+                                        '</div>'
+                                    );
+                            });
+                        }
+
+                        addSoundForms();
+
+                        function addSoundForms() {
+
+                            let div = document.getElementById('sound');
+
+                            let html = '';
+
+                            regions.forEach(function (reg, index) {
+                                html +=
+                                    '<h3 class="mt-5">Sound #' + (index + 1) + '</h3>' +
+                                    '<div class="mt-3 form-group">' +
                                     '<label>Start</label>' +
                                     '<input disabled id="start-' + reg.id + '" class="form-control" value="' + reg.start + '"' +
-                                '</div>' +
-                                '<div class="mt-3 form-group">' +
+                                    '</div>' +
+                                    '<div class="mt-3 form-group">' +
                                     '<label>End</label>' +
                                     '<input disabled id="end-' + reg.id + '" class="form-control" value="' + reg.end + '"' +
-                                '</div>' +
-                                '<div class="mt-3 form-group">' +
+                                    '</div>' +
+                                    '<div class="mt-3 form-group">' +
                                     '<label>Sound</label>' +
                                     '<input id="sound-' + reg.id + '" class="form-control" value="' + reg.sound + '"' +
-                                '</div>';
-                        });
-
-                        html += '<button id="save-sound" class="mt-3 btn btn-success">Save</button>';
-
-                        div.innerHTML = html;
-
-                        regions.forEach(function (reg, index) {
-                            document.querySelector('#sound-' + reg.id).addEventListener('input', function (e) {
-                                regions[index].sound = e.target.value;
+                                    '</div>';
                             });
-                        });
 
-                        document.querySelector('#save-sound').addEventListener('click', function (e) {
-                            $('#save-sound').prop('disabled', true);
+                            if (html !== '') {
+                                html += '<button id="save-sound" class="mt-3 btn btn-success">Save</button>';
+                            }
 
+                            div.innerHTML = html;
 
-                            let data = {audio_file_id: file.id};
-                            let sendRegions = [];
-
-                            regions.forEach(function (region) {
-                                sendRegions.push({
-                                    start: region.start,
-                                    end: region.end,
-                                    sound: region.sound
+                            regions.forEach(function (reg, index) {
+                                document.querySelector('#sound-' + reg.id).addEventListener('input', function (e) {
+                                    regions[index].sound = e.target.value;
                                 });
                             });
 
-                            data.regions = sendRegions;
-                            data._token = "{{ csrf_token() }}";
+                            document.querySelector('#save-sound').addEventListener('click', function (e) {
+                                console.log(regions);
+                                $('#save-sound').prop('disabled', true);
 
-                            $.ajax('/save-sounds', {
-                                type: 'POST',
-                                data: data,
-                                success: function (data) {
-                                    let statusBlock = $('#status');
-                                    statusBlock.removeClass('alert alert-danger');
-                                    statusBlock.addClass('mt-3 alert alert-success');
-                                    statusBlock.text(data.message);
 
-                                    setTimeout(function () {
-                                        let lw = new Livewire();
-                                        lw.emit('refresh');
-                                    }, 500);
-                                },
-                                error: function (jqXhr) {
-                                    let errors = jqXhr.responseJSON.errors;
-                                    let keys = Object.keys(errors);
+                                let data = {audio_file_id: file.id};
+                                let sendRegions = [];
 
-                                    keys.forEach(function (key) {
-                                        errors[key].forEach(function (error) {
-                                            let statusBlock = $('#status');
-                                            statusBlock.removeClass('alert alert-success');
-                                            statusBlock.addClass('mt-3 alert alert-danger');
-                                            statusBlock.text(error);
-                                        });
+                                regions.forEach(function (region) {
+                                    sendRegions.push({
+                                        start: region.start,
+                                        end: region.end,
+                                        sound: region.sound
                                     });
+                                });
 
-                                    $('#save-sound').prop('disabled', false);
-                                }
+                                data.regions = sendRegions;
+                                data._token = "{{ csrf_token() }}";
+
+                                $.ajax('/save-sounds', {
+                                    type: 'POST',
+                                    data: data,
+                                    success: function (data) {
+                                        let statusBlock = $('#status');
+                                        statusBlock.removeClass('alert alert-danger');
+                                        statusBlock.addClass('mt-3 alert alert-success');
+                                        statusBlock.text(data.message);
+
+                                        setTimeout(function () {
+                                            let lw = new Livewire();
+                                            lw.emit('refresh');
+                                        }, 500);
+                                    },
+                                    error: function (jqXhr) {
+                                        let errors = jqXhr.responseJSON.errors;
+                                        let keys = Object.keys(errors);
+
+                                        keys.forEach(function (key) {
+                                            errors[key].forEach(function (error) {
+                                                let statusBlock = $('#status');
+                                                statusBlock.removeClass('alert alert-success');
+                                                statusBlock.addClass('mt-3 alert alert-danger');
+                                                statusBlock.text(error);
+                                            });
+                                        });
+
+                                        $('#save-sound').prop('disabled', false);
+                                    }
+                                });
                             });
-                        });
+                        }
 
                     } else if (labelingType === 'author') {
                         region.author = '';
 
                         regions.push(region);
 
-                        let div = document.getElementById('author');
+                        if(!region.hasDeleteButton) {
+                            let regionEl = region.element;
 
-                        let html = '';
+                            let deleteButton = regionEl.appendChild(document.createElement('deleteButton'));
+                            deleteButton.className = 'fa fa-trash';
 
-                        regions.forEach(function (reg, index) {
-                            html +=
-                                '<h3 class="mt-5">Author #' + (index + 1) + '</h3>' +
-                                '<div class="mt-3 form-group">' +
+                            deleteButton.addEventListener('click', function(e) {
+                                let regionIndex = regions.findIndex(v => v.id == region.id);
+                                regions.splice(regionIndex, 1);
+                                region.remove();
+                                addAuthorForms();
+                                refreshAuthorLabels();
+                            });
+
+                            deleteButton.title = "Delete region";
+
+                            let css = {
+                                display: 'block',
+                                float: 'right',
+                                padding: '3px',
+                                position: 'relative',
+                                zIndex: 10,
+                                cursor: 'pointer',
+                                color: 'red',
+                                margin: '4px'
+                            };
+
+                            region.style(deleteButton, css);
+                            region.hasDeleteButton = true;
+                        }
+
+                        $('region[data-id="' + region.id + '"]')
+                            .eq(0)
+                            .append(
+                                '<div class="region-labels py-1" style="padding-left: 6px">' +
+                                '<p class="m-0">Author #' + regions.length + '</p>' +
+                                '</div>'
+                            );
+
+                        function refreshAuthorLabels() {
+                            let regionLabels = document.getElementsByClassName('region-labels');
+                            let len = regionLabels.length
+                            for (let i = 0; i < len; i++) {
+                                regionLabels[0].parentNode.removeChild(regionLabels[0]);
+                            }
+                            regions.forEach(function (reg, index) {
+                                $('region[data-id="' + reg.id + '"]')
+                                    .eq(0)
+                                    .append(
+                                        '<div class="region-labels py-1" style="padding-left: 6px">' +
+                                        '<p class="m-0">Author #' + (index + 1) + '</p>' +
+                                        '</div>'
+                                    );
+                            });
+                        }
+
+                        addAuthorForms();
+
+                        function addAuthorForms() {
+                            let div = document.getElementById('author');
+
+                            let html = '';
+
+                            regions.forEach(function (reg, index) {
+                                html +=
+                                    '<h3 class="mt-5">Author #' + (index + 1) + '</h3>' +
+                                    '<div class="mt-3 form-group">' +
                                     '<label>Start</label>' +
                                     '<input disabled id="start-' + reg.id + '" class="form-control" value="' + reg.start + '"' +
-                                '</div>' +
-                                '<div class="mt-3 form-group">' +
+                                    '</div>' +
+                                    '<div class="mt-3 form-group">' +
                                     '<label>End</label>' +
                                     '<input disabled id="end-' + reg.id + '" class="form-control" value="' + reg.end + '"' +
-                                '</div>' +
-                                '<div class="mt-3 form-group">' +
+                                    '</div>' +
+                                    '<div class="mt-3 form-group">' +
                                     '<label>Author</label>' +
                                     '<input id="author-' + reg.id + '" class="form-control" value="' + reg.author + '"' +
-                                '</div>';
-                        });
-
-                        html += '<button id="save-author" class="mt-3 btn btn-success">Save</button>';
-
-                        div.innerHTML = html;
-
-                        regions.forEach(function (reg, index) {
-                            document.querySelector('#author-' + reg.id).addEventListener('input', function (e) {
-                                regions[index].author = e.target.value;
+                                    '</div>';
                             });
-                        });
 
-                        document.querySelector('#save-author').addEventListener('click', function (e) {
-                            $('#save-author').prop('disabled', true);
+                            if (html !== '') {
+                                html += '<button id="save-author" class="mt-3 btn btn-success">Save</button>';
+                            }
 
+                            div.innerHTML = html;
 
-                            let data = {audio_file_id: file.id};
-                            let sendRegions = [];
-
-                            regions.forEach(function (region) {
-                                sendRegions.push({
-                                    start: region.start,
-                                    end: region.end,
-                                    author: region.author
+                            regions.forEach(function (reg, index) {
+                                document.querySelector('#author-' + reg.id).addEventListener('input', function (e) {
+                                    regions[index].author = e.target.value;
                                 });
                             });
 
-                            data.regions = sendRegions;
-                            data._token = "{{ csrf_token() }}";
+                            document.querySelector('#save-author').addEventListener('click', function (e) {
+                                $('#save-author').prop('disabled', true);
 
-                            $.ajax('/save-authors', {
-                                type: 'POST',
-                                data: data,
-                                success: function (data) {
-                                    let statusBlock = $('#status');
-                                    statusBlock.removeClass('alert alert-danger');
-                                    statusBlock.addClass('mt-3 alert alert-success');
-                                    statusBlock.text(data.message);
 
-                                    setTimeout(function () {
-                                        let lw = new Livewire();
-                                        lw.emit('refresh');
-                                    }, 500);
-                                },
-                                error: function (jqXhr) {
-                                    $('#save-author').prop('disabled', false);
+                                let data = {audio_file_id: file.id};
+                                let sendRegions = [];
 
-                                    let errors = jqXhr.responseJSON.errors;
-                                    let keys = Object.keys(errors);
-
-                                    keys.forEach(function (key) {
-                                        errors[key].forEach(function (error) {
-                                            let statusBlock = $('#status');
-                                            statusBlock.removeClass('alert alert-success');
-                                            statusBlock.addClass('mt-3 alert alert-danger');
-                                            statusBlock.text(error);
-                                        });
+                                regions.forEach(function (region) {
+                                    sendRegions.push({
+                                        start: region.start,
+                                        end: region.end,
+                                        author: region.author
                                     });
-                                }
+                                });
+
+                                data.regions = sendRegions;
+                                data._token = "{{ csrf_token() }}";
+
+                                $.ajax('/save-authors', {
+                                    type: 'POST',
+                                    data: data,
+                                    success: function (data) {
+                                        let statusBlock = $('#status');
+                                        statusBlock.removeClass('alert alert-danger');
+                                        statusBlock.addClass('mt-3 alert alert-success');
+                                        statusBlock.text(data.message);
+
+                                        setTimeout(function () {
+                                            let lw = new Livewire();
+                                            lw.emit('refresh');
+                                        }, 500);
+                                    },
+                                    error: function (jqXhr) {
+                                        $('#save-author').prop('disabled', false);
+
+                                        let errors = jqXhr.responseJSON.errors;
+                                        let keys = Object.keys(errors);
+
+                                        keys.forEach(function (key) {
+                                            errors[key].forEach(function (error) {
+                                                let statusBlock = $('#status');
+                                                statusBlock.removeClass('alert alert-success');
+                                                statusBlock.addClass('mt-3 alert alert-danger');
+                                                statusBlock.text(error);
+                                            });
+                                        });
+                                    }
+                                });
                             });
-                        });
+                        }
                     } else if (labelingType === 'text') {
                         region.author = '';
                         region.text = '';
 
                         regions.push(region);
 
-                        let div = document.getElementById('text');
+                        if(!region.hasDeleteButton) {
+                            let regionEl = region.element;
 
-                        let html = '';
+                            let deleteButton = regionEl.appendChild(document.createElement('deleteButton'));
+                            deleteButton.className = 'fa fa-trash';
 
-                        regions.forEach(function (reg, index) {
-                            html +=
-                                '<h3 class="mt-5">Text #' + (index + 1) + '</h3>' +
-                                '<div class="mt-3 form-group">' +
+                            deleteButton.addEventListener('click', function(e) {
+                                let regionIndex = regions.findIndex(v => v.id == region.id);
+                                regions.splice(regionIndex, 1);
+                                region.remove();
+                                addTextForms();
+                                refreshTextLabels();
+                            });
+
+                            deleteButton.title = "Delete region";
+
+                            let css = {
+                                display: 'block',
+                                float: 'right',
+                                padding: '3px',
+                                position: 'relative',
+                                zIndex: 10,
+                                cursor: 'pointer',
+                                color: 'red',
+                                margin: '4px'
+                            };
+
+                            region.style(deleteButton, css);
+                            region.hasDeleteButton = true;
+                        }
+
+                        $('region[data-id="' + region.id + '"]')
+                            .eq(0)
+                            .append(
+                                '<div class="region-labels py-1" style="padding-left: 6px">' +
+                                '<p class="m-0">Text #' + regions.length + '</p>' +
+                                '</div>'
+                            );
+
+                        function refreshTextLabels() {
+                            let regionLabels = document.getElementsByClassName('region-labels');
+                            let len = regionLabels.length
+                            for (let i = 0; i < len; i++) {
+                                regionLabels[0].parentNode.removeChild(regionLabels[0]);
+                            }
+                            regions.forEach(function (reg, index) {
+                                $('region[data-id="' + reg.id + '"]')
+                                    .eq(0)
+                                    .append(
+                                        '<div class="region-labels py-1" style="padding-left: 6px">' +
+                                        '<p class="m-0">Text #' + (index + 1) + '</p>' +
+                                        '</div>'
+                                    );
+                            });
+                        }
+
+                        addTextForms();
+
+                        function addTextForms() {
+
+                            let div = document.getElementById('text');
+
+                            let html = '';
+
+                            regions.forEach(function (reg, index) {
+                                html +=
+                                    '<h3 class="mt-5">Text #' + (index + 1) + '</h3>' +
+                                    '<div class="mt-3 form-group">' +
                                     '<label>Start</label>' +
                                     '<input disabled id="start-' + reg.id + '" class="form-control" value="' + reg.start + '"' +
-                                '</div>' +
-                                '<div class="mt-3 form-group">' +
+                                    '</div>' +
+                                    '<div class="mt-3 form-group">' +
                                     '<label>End</label>' +
                                     '<input disabled id="end-' + reg.id + '" class="form-control" value="' + reg.end + '"' +
-                                '</div>' +
-                                '<div class="mt-3 form-group">' +
+                                    '</div>' +
+                                    '<div class="mt-3 form-group">' +
                                     '<label>Author</label>' +
                                     '<input id="author-' + reg.id + '" class="form-control" value="' + reg.author + '"' +
-                                '</div>' +
-                                '<div class="mt-3 form-group">' +
+                                    '</div>' +
+                                    '<div class="mt-3 form-group">' +
                                     '<label>Text</label>' +
                                     '<input id="text-' + reg.id + '" class="form-control" value="' + reg.text + '"' +
-                                '</div>';
-                        });
-
-                        html += '<button id="save-text" class="mt-3 btn btn-success">Save</button>'
-
-                        div.innerHTML = html;
-
-                        regions.forEach(function (reg, index) {
-                            document.querySelector('#author-' + reg.id).addEventListener('input', function (e) {
-                                regions[index].author = e.target.value;
+                                    '</div>';
                             });
 
-                            document.querySelector('#text-' + reg.id).addEventListener('input', function (e) {
-                                regions[index].text = e.target.value;
-                            });
-                        });
+                            if (html !== '') {
+                                html += '<button id="save-text" class="mt-3 btn btn-success">Save</button>'
+                            }
 
-                        document.querySelector('#save-text').addEventListener('click', function (e) {
-                            $('#save-text').prop('disabled', true);
+                            div.innerHTML = html;
 
+                            regions.forEach(function (reg, index) {
+                                document.querySelector('#author-' + reg.id).addEventListener('input', function (e) {
+                                    regions[index].author = e.target.value;
+                                });
 
-                            let data = {audio_file_id: file.id};
-                            let sendRegions = [];
-
-                            regions.forEach(function (region) {
-                                sendRegions.push({
-                                    start: region.start,
-                                    end: region.end,
-                                    author: region.author,
-                                    text: region.text
+                                document.querySelector('#text-' + reg.id).addEventListener('input', function (e) {
+                                    regions[index].text = e.target.value;
                                 });
                             });
 
-                            data.regions = sendRegions;
-                            data._token = "{{ csrf_token() }}";
+                            document.querySelector('#save-text').addEventListener('click', function (e) {
+                                $('#save-text').prop('disabled', true);
 
-                            $.ajax('/save-texts', {
-                                type: 'POST',
-                                data: data,
-                                success: function (data) {
-                                    let statusBlock = $('#status');
-                                    statusBlock.removeClass('alert alert-danger');
-                                    statusBlock.addClass('mt-3 alert alert-success');
-                                    statusBlock.text(data.message);
 
-                                    setTimeout(function () {
-                                        let lw = new Livewire();
-                                        lw.emit('refresh');
-                                    }, 500);
-                                },
-                                error: function (jqXhr) {
-                                    $('#save-text').prop('disabled', false);
+                                let data = {audio_file_id: file.id};
+                                let sendRegions = [];
 
-                                    let errors = jqXhr.responseJSON.errors;
-                                    let keys = Object.keys(errors);
-
-                                    keys.forEach(function (key) {
-                                        errors[key].forEach(function (error) {
-                                            let statusBlock = $('#status');
-                                            statusBlock.removeClass('alert alert-success');
-                                            statusBlock.addClass('mt-3 alert alert-danger');
-                                            statusBlock.text(error);
-                                        });
+                                regions.forEach(function (region) {
+                                    sendRegions.push({
+                                        start: region.start,
+                                        end: region.end,
+                                        author: region.author,
+                                        text: region.text
                                     });
-                                }
+                                });
+
+                                data.regions = sendRegions;
+                                data._token = "{{ csrf_token() }}";
+
+                                $.ajax('/save-texts', {
+                                    type: 'POST',
+                                    data: data,
+                                    success: function (data) {
+                                        let statusBlock = $('#status');
+                                        statusBlock.removeClass('alert alert-danger');
+                                        statusBlock.addClass('mt-3 alert alert-success');
+                                        statusBlock.text(data.message);
+
+                                        setTimeout(function () {
+                                            let lw = new Livewire();
+                                            lw.emit('refresh');
+                                        }, 500);
+                                    },
+                                    error: function (jqXhr) {
+                                        $('#save-text').prop('disabled', false);
+
+                                        let errors = jqXhr.responseJSON.errors;
+                                        let keys = Object.keys(errors);
+
+                                        keys.forEach(function (key) {
+                                            errors[key].forEach(function (error) {
+                                                let statusBlock = $('#status');
+                                                statusBlock.removeClass('alert alert-success');
+                                                statusBlock.addClass('mt-3 alert alert-danger');
+                                                statusBlock.text(error);
+                                            });
+                                        });
+                                    }
+                                });
                             });
-                        });
+                        }
                     }
                 } else {
                     let start = $('#start-' + region.id);
