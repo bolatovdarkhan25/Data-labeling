@@ -25,6 +25,8 @@
         <script src="{{ asset('js/wavesurfer.js/dist/wavesurfer.js')}}"></script>
         <script src="{{ asset('js/wavesurfer.js/dist/plugin/wavesurfer.regions.js')}}"></script>
         <script src="{{ asset('js/wavesurfer.js/dist/plugin/wavesurfer.timeline.js') }}"></script>
+        <script src="{{ asset('js/imask/dist/imask.js') }}"></script>
+        <script src="https://widget.cloudpayments.ru/bundles/checkout"></script>
         <!-- Fonts -->
         <link rel="dns-prefetch" href="//fonts.gstatic.com">
         <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
@@ -80,6 +82,8 @@
                 <li><a href="/admin/labeled-sounds"><em class="fa fa-file">&nbsp;</em> Labeled sounds</a></li>
                 <li><a href="/admin/labeled-authors"><em class="fa fa-file">&nbsp;</em> Labeled authors</a></li>
                 <li><a href="/admin/labeled-texts"><em class="fa fa-file">&nbsp;</em> Labeled texts</a></li>
+                <li><a href="/admin/transactions"><em class="fa fa-money">&nbsp;</em> Transactions</a></li>
+                <li><a href="/admin/users-subscriptions"><em class="fa fa-user-plus">&nbsp;</em> Users subscriptions</a></li>
                 <li><a href="/"><em class="fa fa-arrow-left">&nbsp;</em> To the app</a></li>
                 <li><a href="{{ route('logout') }}"
                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

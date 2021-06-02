@@ -20,6 +20,7 @@ class MainPage extends Component
     public $labelingFile;
     public $isPlaying;
     public $labelingType;
+    public $notSubscribed;
 
     protected $rules = [
         'selectedFiles' => 'required|array',
@@ -33,6 +34,12 @@ class MainPage extends Component
 
     public function upload()
     {
+        if (!Auth::user()->subscription) {
+            $this->notSubscribed = true;
+
+            return;
+        }
+
         $this->validate();
 
         foreach ($this->selectedFiles as $selectedFile) {
@@ -54,28 +61,58 @@ class MainPage extends Component
 
     public function label($id)
     {
+        if (!Auth::user()->subscription) {
+            $this->notSubscribed = true;
+
+            return;
+        }
+
         $this->openLabelTypeModal($id);
     }
 
     public function cancelLabeling()
     {
+        if (!Auth::user()->subscription) {
+            $this->notSubscribed = true;
+
+            return;
+        }
+
         $this->labelingFile = null;
         $this->labelingType = null;
     }
 
     public function openLabelTypeModal($id)
     {
+        if (!Auth::user()->subscription) {
+            $this->notSubscribed = true;
+
+            return;
+        }
+
         $this->emit('openLabelTypesModal', $id);
     }
 
     public function labelTypeChosen($type, $id)
     {
+        if (!Auth::user()->subscription) {
+            $this->notSubscribed = true;
+
+            return;
+        }
+
         $this->labelingFile = AudioFile::find($id);
         $this->labelingType = $type;
     }
 
     public function downloadSounds($id)
     {
+        if (!Auth::user()->subscription) {
+            $this->notSubscribed = true;
+
+            return;
+        }
+
         $headers = ['id', 'start', 'end', 'sound'];
 
         $data = LabeledSound::where('audio_file_id', $id)->select($headers)->get()->toArray();
@@ -100,6 +137,12 @@ class MainPage extends Component
 
     public function downloadAuthors($id)
     {
+        if (!Auth::user()->subscription) {
+            $this->notSubscribed = true;
+
+            return;
+        }
+
         $headers = ['id', 'start', 'end', 'author'];
 
         $data = LabeledAuthor::where('audio_file_id', $id)->select($headers)->get()->toArray();
@@ -124,6 +167,12 @@ class MainPage extends Component
 
     public function downloadTexts($id)
     {
+        if (!Auth::user()->subscription) {
+            $this->notSubscribed = true;
+
+            return;
+        }
+
         $headers = ['id', 'start', 'end', 'author', 'text'];
 
         $data = LabeledText::where('audio_file_id', $id)->select($headers)->get()->toArray();

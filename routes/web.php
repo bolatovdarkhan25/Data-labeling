@@ -4,7 +4,9 @@ use App\Http\Controllers\LabelAudioController;
 use App\Http\Livewire\Admin\AudioFilesController;
 use App\Http\Livewire\Admin\DashboardControl;
 use App\Http\Livewire\Admin\SubscriptionsControl;
+use App\Http\Livewire\Admin\TransactionsControl;
 use App\Http\Livewire\Admin\UsersControl;
+use App\Http\Livewire\Admin\UserSubscriptionsControl;
 use App\Http\Livewire\LabeledAuthorsController;
 use App\Http\Livewire\LabeledSoundsController;
 use App\Http\Livewire\LabeledTextsController;
@@ -40,10 +42,14 @@ Route::group(['middleware' => ['auth', 'shareUser']], function () {
         Route::get('labeled-sounds', LabeledSoundsController::class)->name('admin.labeled.sounds');
         Route::get('labeled-authors', LabeledAuthorsController::class)->name('admin.labeled.authors');
         Route::get('labeled-texts', LabeledTextsController::class)->name('admin.labeled.texts');
+        Route::get('transactions', TransactionsControl::class)->name('admin.transactions');
+        Route::get('users-subscriptions', UserSubscriptionsControl::class)->name('admin.users.subscriptions');
     });
 
-    Route::post('save-sounds', [LabelAudioController::class, 'saveSounds'])->name('save-sounds');
-    Route::post('save-authors', [LabelAudioController::class, 'saveAuthors'])->name('save-authors');
-    Route::post('save-texts', [LabelAudioController::class, 'saveTexts'])->name('save-texts');
+    Route::group(['middleware' => 'subscribed'], function () {
+        Route::post('save-sounds', [LabelAudioController::class, 'saveSounds'])->name('save-sounds');
+        Route::post('save-authors', [LabelAudioController::class, 'saveAuthors'])->name('save-authors');
+        Route::post('save-texts', [LabelAudioController::class, 'saveTexts'])->name('save-texts');
+    });
 });
 

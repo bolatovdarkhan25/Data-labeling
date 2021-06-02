@@ -15,26 +15,30 @@
             <thead>
             <tr class="bg-blue">
                 <th>ID</th>
-                <th>Audio file id</th>
-                <th>Start</th>
-                <th>End</th>
-                <th>Sound</th>
+                <th>Transaction ID</th>
+                <th>User ID</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Currency</th>
+                <th>Status</th>
                 <th>Created at</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
-            @foreach($sounds as $sound)
+            @foreach($transactions as $transaction)
                 <tr>
-                    <td>{{$sound->id}}</td>
-                    <td>{{$sound->audioFile->id}}</td>
-                    <td>{{$sound->start}}</td>
-                    <td>{{$sound->end}}</td>
-                    <td>{{$sound->sound}}</td>
-                    <td>{{$sound->created_at}}</td>
+                    <td>{{$transaction->id}}</td>
+                    <td>{{$transaction->transaction_id}}</td>
+                    <td>{{$transaction->user_id}}</td>
+                    <td>{{$transaction->type}}</td>
+                    <td>{{$transaction->amount}}</td>
+                    <td>KZT</td>
+                    <td>Success</td>
+                    <td>{{$transaction->created_at}}</td>
                     <td>
                         <div>
-                            <em wire:click.prevent="deleteObject({{$sound->id}})" class="fa fa-trash color-red"></em>
+                            <em wire:click.prevent="deleteObject({{$transaction->id}})" class="fa fa-trash color-red"></em>
                         </div>
                     </td>
                 </tr>

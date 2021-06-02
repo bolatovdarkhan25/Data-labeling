@@ -25,7 +25,7 @@ class LabeledAuthorsController extends Component
         $this->render();
     }
 
-    public function deleteUser(LabeledAuthor $author)
+    public function deleteObject(LabeledAuthor $author)
     {
         $author->delete();
 

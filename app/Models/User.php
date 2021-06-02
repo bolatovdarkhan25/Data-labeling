@@ -46,4 +46,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(AudioFile::class, 'user_id', 'id');
     }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class, 'user_id', 'id');
+    }
+
+    public function subscription()
+    {
+        return $this->hasOne(UserSubscription::class, 'user_id', 'id');
+    }
 }

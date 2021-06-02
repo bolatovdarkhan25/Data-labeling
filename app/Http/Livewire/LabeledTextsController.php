@@ -25,7 +25,7 @@ class LabeledTextsController extends Component
         $this->render();
     }
 
-    public function deleteUser(LabeledText $text)
+    public function deleteObject(LabeledText $text)
     {
         $text->delete();
 

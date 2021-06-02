@@ -25,7 +25,7 @@ class LabeledSoundsController extends Component
         $this->render();
     }
 
-    public function deleteUser(LabeledSound $sound)
+    public function deleteObject(LabeledSound $sound)
     {
         $sound->delete();
 

@@ -26,6 +26,7 @@
     },
     "dependencies": {
         "alpinejs": "^2.8.2",
+        "imask": "^3.4.0",
         "wavesurfer.js": "^5.0.1"
     }
 }

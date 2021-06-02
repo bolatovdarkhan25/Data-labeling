@@ -1,5 +1,10 @@
 <div class="container my-4" x-data="{'selectedFiles': @entangle('selectedFiles'), 'labelingFile': @entangle('labelingFile')}">
     <livewire:choose-label-type-modal></livewire:choose-label-type-modal>
+    @if ($notSubscribed)
+        <div class="alert alert-danger mb-3">
+            You need to buy a subscription first
+        </div>
+    @endif
     @if($audioFiles->count())
         <h2>Audio files that you uploaded</h2>
         <ul class="list-group">

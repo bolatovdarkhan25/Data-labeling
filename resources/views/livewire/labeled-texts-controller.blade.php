@@ -20,6 +20,7 @@
                 <th>End</th>
                 <th>Author</th>
                 <th>Text</th>
+                <th>Created at</th>
                 <th></th>
             </tr>
             </thead>
@@ -32,9 +33,10 @@
                     <td>{{$text->end}}</td>
                     <td>{{$text->author}}</td>
                     <td>{{$text->text}}</td>
+                    <td>{{$text->created_at}}</td>
                     <td>
                         <div>
-                            <em wire:click.prevent="deleteUser({{$text->id}})" class="fa fa-trash color-red"></em>
+                            <em wire:click.prevent="deleteObject({{$text->id}})" class="fa fa-trash color-red"></em>
                         </div>
                     </td>
                 </tr>

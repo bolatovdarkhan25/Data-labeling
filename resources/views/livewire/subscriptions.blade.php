@@ -1,4 +1,5 @@
 <div class="d-flex justify-content-center">
+    <livewire:bank-card-form-modal></livewire:bank-card-form-modal>
     <div class="mt-5 text-center border pb-5" style="width: 650px; border-radius: 15px"
          x-data="{displayMode: @entangle('displayMode'), selectedSub: @entangle('selectedSub')}">
         <div class="d-flex justify-content-between mb-4" style="height: 40px;">
@@ -49,7 +50,7 @@
                     <button class="btn btn-secondary" style="height: 50px; width: 200px" wire:click.prevent="toSubs">
                         Back
                     </button>
-                    <button class="btn btn-primary" style="height: 50px; width: 200px" wire:click.prevent="toPayment">
+                    <button class="btn btn-primary" style="height: 50px; width: 200px" wire:click.prevent="toCardForm">
                         Continue
                     </button>
                 </div>

@@ -15,26 +15,24 @@
             <thead>
             <tr class="bg-blue">
                 <th>ID</th>
-                <th>Audio file id</th>
-                <th>Start</th>
-                <th>End</th>
-                <th>Sound</th>
+                <th>User ID</th>
+                <th>Subscription ID</th>
+                <th>Expiration date</th>
                 <th>Created at</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
-            @foreach($sounds as $sound)
+            @foreach($usersSubscriptions as $usersSubscription)
                 <tr>
-                    <td>{{$sound->id}}</td>
-                    <td>{{$sound->audioFile->id}}</td>
-                    <td>{{$sound->start}}</td>
-                    <td>{{$sound->end}}</td>
-                    <td>{{$sound->sound}}</td>
-                    <td>{{$sound->created_at}}</td>
+                    <td>{{$usersSubscription->id}}</td>
+                    <td>{{$usersSubscription->user_id}}</td>
+                    <td>{{$usersSubscription->subscription_id}}</td>
+                    <td>{{$usersSubscription->expiration_date}}</td>
+                    <td>{{$usersSubscription->created_at}}</td>
                     <td>
                         <div>
-                            <em wire:click.prevent="deleteObject({{$sound->id}})" class="fa fa-trash color-red"></em>
+                            <em wire:click.prevent="deleteObject({{$usersSubscription->id}})" class="fa fa-trash color-red"></em>
                         </div>
                     </td>
                 </tr>
