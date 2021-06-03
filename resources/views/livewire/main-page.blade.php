@@ -36,7 +36,7 @@
                                     wire:loading.class="cursor-disabled"
                                     wire:loading.class.remove="cursor-pointer"
                                     wire:loading.attr="disabled"
-                                    title="Download sound">
+                                    title="Download author">
                             </button>
                         @endif
                         @if (count($audioFile->texts))
@@ -46,7 +46,7 @@
                                     wire:loading.class="cursor-disabled"
                                     wire:loading.class.remove="cursor-pointer"
                                     wire:loading.attr="disabled"
-                                    title="Download sound">
+                                    title="Download text">
                             </button>
                         @endif
                     </div>

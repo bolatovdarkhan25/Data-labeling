@@ -14,4 +14,9 @@ class UserSubscription extends Model
         'subscription_id',
         'expiration_date'
     ];
+
+    public function subscription()
+    {
+        return $this->belongsTo(Subscription::class, 'subscription_id', 'id');
+    }
 }

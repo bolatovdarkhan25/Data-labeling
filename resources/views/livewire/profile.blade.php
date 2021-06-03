@@ -18,6 +18,12 @@
                 <div class="mt-4 text-center">
                     <h1>Your subscription</h1>
                     @if ($user->subscription)
+                        <div class="ml-auto mr-auto mt-4 sub-card {{$user->subscription->subscription->class}} disabled-sub">
+                            <div class="d-flex justify-content-between sub-card-in">
+                                <h3>{{$user->subscription->subscription->name}}</h3>
+                                <h3 class="font-weight-bold">{{$user->subscription->subscription->price}} ₸</h3>
+                            </div>
+                        </div>
                     @else
                         <div>
                             <h5>You don't have any subscriptions!</h5>
