@@ -49,6 +49,14 @@
                                     title="Download text">
                             </button>
                         @endif
+                        <button class="fa fa-lg fa-trash text-danger ml-2 cursor-pointer border-0"
+                                style="margin-top: -1px;"
+                                wire:click.prevent="deleteAudio({{$audioFile->id}})"
+                                wire:loading.class="cursor-disabled"
+                                wire:loading.class.remove="cursor-pointer"
+                                wire:loading.attr="disabled"
+                                title="Delete audio file">
+                        </button>
                     </div>
                 </li>
             @endforeach

@@ -195,6 +195,14 @@ class MainPage extends Component
         return Storage::disk('public')->download('text.csv');
     }
 
+    public function deleteAudio($id)
+    {
+        AudioFile::destroy($id);
+        LabeledSound::where('audio_file_id', $id)->delete();
+        LabeledSound::where('audio_file_id', $id)->delete();
+        LabeledSound::where('audio_file_id', $id)->delete();
+    }
+
     public function render()
     {
         $audioFiles = AudioFile::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
